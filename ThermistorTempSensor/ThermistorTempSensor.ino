@@ -16,6 +16,8 @@ float setOut;
 
 int rel = 3;
 
+char data = 0;
+
 void setup() {
 Serial.begin(9600);
 pinMode(rel, OUTPUT);
@@ -37,6 +39,32 @@ pinMode(rel, OUTPUT);
 }
 
 void loop() {
+
+  //bluetooth stuff 
+  if(Serial.available() > 0)  // Send data only when you receive data:
+    {
+    data = Serial.read();      //Read the incoming data and store it into variable data
+    Serial.print(data);        //Print Value inside data in Serial monitor
+    Serial.print("\n");        //New line 
+    }
+    if(data == '1')            //Checks whether value of data is equal to 1 
+      {
+        digitalWrite(rel, HIGH);//switch relay on
+        Serial.print("Relay On for 1 Second\n");
+        delay(1000);
+        digitalWrite(rel, LOW);//switch relay off
+        Serial.print("Relay Off Again\n");
+        
+      }
+        else if(data == '2')       //Checks whether value of data is equal to 0
+        {
+        digitalWrite(rel, HIGH);//switch relay on
+        Serial.print("Relay On for 2 Second\n");
+        delay(2000);
+        digitalWrite(rel, LOW);//switch relay off
+        Serial.print("Relay Off Again\n");
+        }
+
 
 //screen loop
 display.clearDisplay();  // Clear the display so we can refresh
@@ -79,6 +107,8 @@ display.println("Tmp:");
       display.println("-- Cooling");
       display.setCursor(0, 55);
       display.println("-- Cooling");
+      Serial.print("Cooling\n");
+      
 
       display.display();  // Print everything we set previously
       delay(3000);
@@ -92,6 +122,7 @@ display.println("Tmp:");
       display.println("-- Hold");
       display.setCursor(0, 55);
       display.println("-- Hold");
+      Serial.print("Holding\n");
 
       display.display();  // Print everything we set previously
       
@@ -113,11 +144,17 @@ display.setCursor(0, 35);
 display.println("Set:");
 display.setCursor(45, 35);
 display.println(setOut); 
+Serial.print("Set: ");
+Serial.print(setOut);
+Serial.print("\n");
 
 display.setCursor(0, 55);
 display.println("Tmp:");
 display.setCursor(45, 55);
 display.println(Tc); 
+Serial.print("Temp: ");
+Serial.print(Tc);
+Serial.print("\n");
 
 
 display.display();  // Print everything we set previously
