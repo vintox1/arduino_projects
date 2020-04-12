@@ -1,7 +1,7 @@
 int out1 = 9;
 int potentiometerPin = A2;
 
-
+//comment
 void setup() {
   Serial.begin(9600); 
   pinMode(out1,OUTPUT);
